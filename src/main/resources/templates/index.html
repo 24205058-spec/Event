@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home | EventFlow</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="nav-brand"><span class="brand-icon">🎪</span><span>EventFlow</span></a>
+        <ul class="nav-links">
+            <li><a href="/" class="active">Home</a></li>
+            <li><a th:href="@{/events}">Events</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/events/create}" class="btn-nav">+ Create</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Manage Events<br/><span class="gradient-text">Effortlessly</span></h1>
+        <p class="hero-subtitle">Create, discover, and manage your events in one beautifully designed place.</p>
+        <div class="hero-actions">
+            <a th:href="@{/events}" class="btn btn-primary btn-lg">Browse Events</a>
+            <a th:href="@{/events/create}" class="btn btn-outline btn-lg">Create Event</a>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="floating-card">📅 Tech Conference 2025</div>
+        <div class="floating-card fc2">🎵 Music Night Gala</div>
+        <div class="floating-card fc3">🚀 Startup Pitch Day</div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Upcoming Events</h2>
+        <div class="card-grid" th:if="${recentEvents != null and !recentEvents.empty}">
+            <div class="event-card" th:each="event : ${recentEvents}">
+                <div class="event-card-header">
+                    <span class="event-date-badge" th:text="${#temporals.format(event.eventDate, 'MMM dd')}">Jan 01</span>
+                </div>
+                <div class="event-card-body">
+                    <h3 class="event-title" th:text="${event.title}">Title</h3>
+                    <p class="event-meta">📍 <span th:text="${event.venue}">Venue</span></p>
+                    <p class="event-meta">🕐 <span th:text="${#temporals.format(event.startTime, 'HH:mm')}">00:00</span></p>
+                    <a th:href="@{/events/{id}(id=${event.id})}" class="btn btn-sm btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        <div th:if="${recentEvents == null or recentEvents.empty}" class="empty-state">
+            <p>No upcoming events yet. <a th:href="@{/events/create}">Create one now!</a></p>
+        </div>
+        <div class="section-footer">
+            <a th:href="@{/events}" class="btn btn-outline">View All Events →</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-inner"><p>&copy; 2025 EventFlow — Event Management System</p></div>
+</footer>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
