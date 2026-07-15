@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -27,17 +26,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("title") String title,
             @Param("venue") String venue,
             Pageable pageable);
-
-    // Venue conflict detection
-    @Query("SELECT e FROM Event e WHERE e.venue = :venue AND e.eventDate = :date AND e.id <> :excludeId " +
-           "AND e.startTime < :endTime " +
-           "AND (e.startTime + e.durationInMinutes * 60) > :startTimeSeconds")
-    List<Event> findConflictingEventsRaw(
-            @Param("venue") String venue,
-            @Param("date") LocalDate date,
-            @Param("startTimeSeconds") int startTimeSeconds,
-            @Param("endTime") LocalTime endTime,
-            @Param("excludeId") Long excludeId);
 
     // Dashboard counts
     @Query("SELECT COUNT(e) FROM Event e")
